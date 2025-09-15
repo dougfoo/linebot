@@ -1,0 +1,17 @@
+{
+  "name": "linebot-webhook",
+  "version": "1.0.0",
+  "description": "LINE Bot webhook function",
+  "main": "index.js",
+  "scripts": {
+    "start": "functions-framework --target=webhook --port=8080"
+  },
+  "dependencies": {
+    "@google-cloud/functions-framework": "^3.4.0",
+    "@google-cloud/secret-manager": "^5.6.0",
+    "@line/bot-sdk": "^9.3.0"
+  },
+  "engines": {
+    "node": "20"
+  }
+}
