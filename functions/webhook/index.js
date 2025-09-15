@@ -92,7 +92,24 @@ functions.http('webhook', async (req, res) => {
       getSecret('line-channel-access-token')
     ]);
 
-    // Validate LINE signature
+    // Check if this is a LINE verification request (empty events array)
+    const events = req.body.events || [];
+    const isVerification = events.length === 0;
+    
+    console.log('Request info:', {
+      isVerification: isVerification,
+      eventsCount: events.length,
+      userAgent: req.headers['user-agent']
+    });
+    
+    // For verification requests, just respond OK without signature validation
+    if (isVerification && req.headers['user-agent']?.includes('LineBotWebhook')) {
+      console.log('LINE verification request detected, responding OK');
+      res.status(200).send('OK');
+      return;
+    }
+    
+    // Validate LINE signature for actual webhook events
     const signature = req.headers['x-line-signature'];
     const body = JSON.stringify(req.body);
     
@@ -105,8 +122,7 @@ functions.http('webhook', async (req, res) => {
     // Initialize LINE client
     const lineClient = new LineClient(channelAccessToken);
 
-    // Process LINE events
-    const events = req.body.events || [];
+    // Process LINE events (events already defined above)
     console.log(`Processing ${events.length} events`);
 
     for (const event of events) {

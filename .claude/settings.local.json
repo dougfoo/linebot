@@ -7,6 +7,9 @@
       "Bash(gcloud functions list:*)",
       "Bash(gcloud functions describe:*)",
       "Read(/C:\\c\\Users\\dougc\\git/**)",
+      "Read(/C:\\c\\Users\\dougc\\git/**)",
+      "Read(/C:\\c\\Users\\dougc\\git/**)",
+      "Bash(gcloud functions logs read:*)",
       "Read(/C:\\c\\Users\\dougc\\git/**)"
     ],
     "deny": [],
