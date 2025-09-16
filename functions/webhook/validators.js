@@ -46,6 +46,11 @@ function parseCommand(text) {
 
   const trimmed = text.trim().toLowerCase();
   
+  // Only respond to slash commands
+  if (!trimmed.startsWith('/')) {
+    return { command: 'ignore' };
+  }
+  
   if (trimmed.startsWith('/stock')) {
     return {
       command: 'stock',
@@ -53,7 +58,7 @@ function parseCommand(text) {
     };
   }
   
-  if (trimmed === '/help' || trimmed === 'help') {
+  if (trimmed === '/help') {
     return {
       command: 'help'
     };

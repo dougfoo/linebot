@@ -42,7 +42,7 @@ function validateLineSignature(body, signature, channelSecret) {
   return hash === signature;
 }
 
-async function handleTextMessage(message, replyToken, lineClient) {
+async function handleTextMessage(message, replyToken, lineClient, stockApiKey) {
   const text = message.text;
   const command = parseCommand(text);
 
@@ -54,10 +54,15 @@ async function handleTextMessage(message, replyToken, lineClient) {
       if (!stockParse.valid) {
         return lineClient.createTextMessage(`❌ ${stockParse.error}`);
       }
-      return lineClient.createStockMessage(stockParse.ticker);
+      console.log('Fetching real stock data for:', stockParse.ticker);
+      return await lineClient.createStockMessage(stockParse.ticker, stockApiKey);
 
     case 'help':
       return lineClient.createHelpMessage();
+
+    case 'ignore':
+      // Don't respond to non-slash commands
+      return null;
 
     case 'unknown':
     default:
@@ -86,10 +91,11 @@ functions.http('webhook', async (req, res) => {
   }
 
   try {
-    // Get LINE credentials from Secret Manager
-    const [channelSecret, channelAccessToken] = await Promise.all([
+    // Get LINE credentials and stock API key from Secret Manager
+    const [channelSecret, channelAccessToken, stockApiKey] = await Promise.all([
       getSecret('line-channel-secret'),
-      getSecret('line-channel-access-token')
+      getSecret('line-channel-access-token'),
+      getSecret('stock-api-key')
     ]);
 
     // Check if this is a LINE verification request (empty events array)
@@ -151,11 +157,17 @@ functions.http('webhook', async (req, res) => {
           const responseMessage = await handleTextMessage(
             event.message, 
             event.replyToken, 
-            lineClient
+            lineClient,
+            stockApiKey
           );
 
-          await lineClient.replyMessage(event.replyToken, responseMessage);
-          console.log('Reply sent successfully');
+          // Only reply if we have a response message (ignore non-slash commands)
+          if (responseMessage) {
+            await lineClient.replyMessage(event.replyToken, responseMessage);
+            console.log('Reply sent successfully');
+          } else {
+            console.log('Ignoring non-slash command');
+          }
         } catch (error) {
           console.error('Error handling message:', error);
           
