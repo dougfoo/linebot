@@ -10,9 +10,16 @@
       "Read(/C:\\c\\Users\\dougc\\git/**)",
       "Read(/C:\\c\\Users\\dougc\\git/**)",
       "Bash(gcloud functions logs read:*)",
-      "Read(/C:\\c\\Users\\dougc\\git/**)"
+      "Read(/C:\\c\\Users\\dougc\\git/**)",
+      "Read(/C:\\c\\Users\\dougc\\git/**)",
+      "Bash(gh:*)",
+      "Bash(git push:*)",
+      "Bash(gcloud secrets versions access:*)"
     ],
     "deny": [],
-    "ask": []
+    "ask": [],
+    "additionalDirectories": [
+      "C:\\c\\Users\\dougc\\git"
+    ]
   }
 }

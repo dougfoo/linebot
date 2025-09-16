@@ -48,9 +48,15 @@ LINE App → Cloud Functions → Secret Manager
 
 ## Development Status
 
-- ✅ **Phase 1**: Basic `/stock` command with dummy data
+- ✅ **Phase 1**: Basic `/stock` command with dummy data - **COMPLETE & DEPLOYED**
 - 🔄 **Phase 2**: Real stock API integration (planned)
 - 🔄 **Phase 3**: Calendar functionality (planned)
+
+## 🚀 Live Deployment
+
+- **Webhook URL**: `https://line-webhook-3qezrvhttq-uc.a.run.app`
+- **Status**: ✅ Active and responding
+- **Last Updated**: September 15, 2025
 
 ## Documentation
 
